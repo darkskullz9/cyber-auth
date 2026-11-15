@@ -25,6 +25,12 @@ security:
                 # where to redirect after logout
                 # target: app_any_route
 
+            login_throttling:
+                max_attempts: 5
+                interval: '15 minutes'
+
+            user_checker: App\Security\UserChecker
+
             remember_me:
                 secret: '%kernel.secret%'
                 lifetime: 604800
