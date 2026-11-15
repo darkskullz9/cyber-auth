@@ -59,9 +59,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: PasswordHistory::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $passwordHistories;
 
+    /**
+     * @var Collection<int, LoginHistory>
+     */
+    #[ORM\OneToMany(targetEntity: LoginHistory::class, mappedBy: 'user')]
+    private Collection $loginHistories;
+
     public function __construct()
     {
         $this->passwordHistories = new ArrayCollection();
+        $this->loginHistories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -241,6 +248,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($passwordHistory->getUser() === $this) {
                 $passwordHistory->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, LoginHistory>
+     */
+    public function getLoginHistories(): Collection
+    {
+        return $this->loginHistories;
+    }
+
+    public function addLoginHistory(LoginHistory $loginHistory): static
+    {
+        if (!$this->loginHistories->contains($loginHistory)) {
+            $this->loginHistories->add($loginHistory);
+            $loginHistory->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLoginHistory(LoginHistory $loginHistory): static
+    {
+        if ($this->loginHistories->removeElement($loginHistory)) {
+            // set the owning side to null (unless already changed)
+            if ($loginHistory->getUser() === $this) {
+                $loginHistory->setUser(null);
             }
         }
 
