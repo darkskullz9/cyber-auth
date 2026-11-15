@@ -49,7 +49,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $codePostal = null;
 
     #[ORM\Column]
-    private ?bool $isSuspended = null;
+    private ?bool $isSuspended = false;
 
     public function getId(): ?int
     {
