@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\LoginHistory;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,6 +15,19 @@ class LoginHistoryRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, LoginHistory::class);
+    }
+
+    /**
+     * @return LoginHistory[]
+     */
+    public function findLatestByUser(User $user): array
+    {
+        return $this->createQueryBuilder('l')
+            ->andWhere('l.user = :user')
+            ->setParameter('user', $user)
+            ->orderBy('l.loggedAt', 'DESC')
+            ->getQuery()
+            ->getResult();
     }
 
 //    /**

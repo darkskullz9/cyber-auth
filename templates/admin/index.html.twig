@@ -1,20 +1,59 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AdminController!{% endblock %}
+{% block title %}Administration - Cyber Auth{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <div class="container">
+        <h1>Administration</h1>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+        <h2>Gestion des utilisateurs</h2>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/prauc/Documents/code/cyber-auth/src/Controller/AdminController.php</code></li>
-        <li>Your template at <code>C:/Users/prauc/Documents/code/cyber-auth/templates/admin/index.html.twig</code></li>
-    </ul>
-</div>
+        <p>Nombre d'utilisateurs : {{ users|length }}</p>
+
+        {% if users is empty %}
+            <p>Aucun utilisateur enregistré.</p>
+        {% else %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Email</th>
+                        <th>Rôles</th>
+                        <th>Statut</th>
+                        <th>Historique des connexions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.nom }}</td>
+                            <td>{{ user.prenom }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.roles|join(', ') }}</td>
+                            <td>{{ user.isSuspended ? 'Suspendu' : 'Actif' }}</td>
+                            <td>
+                                {% set histories = loginHistoriesByUserId[user.id] ?? [] %}
+
+                                {% if histories is empty %}
+                                    <span>Aucune connexion enregistrée</span>
+                                {% else %}
+                                    <ul>
+                                        {% for history in histories %}
+                                            <li>
+                                                {{ history.loggedAt|date('d/m/Y à H:i:s') }}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
 {% endblock %}
