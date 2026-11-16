@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil - Cyber Auth{% endblock %}
+
+{% block body %}
+    <main>
+        <header>
+            <h1>Cyber Auth</h1>
+            <p>Plateforme de gestion sécurisée des utilisateurs et des accès.</p>
+        </header>
+
+        <section>
+            <h2>Bienvenue</h2>
+            <p>
+                Gérez votre compte et accédez aux fonctionnalités
+                de la plateforme.
+            </p>
+
+            {% if app.user %}
+                <p>Bonjour {{ app.user.prenom }} {{ app.user.nom }} !</p>
+
+                <a href="{{ path('app_profile') }}">Mon profil</a>
+
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('app_admin') }}">Administration</a>
+                {% endif %}
+
+                <a href="{{ path('app_logout') }}">Déconnexion</a>
+            {% else %}
+                <a href="{{ path('app_login') }}">Connexion</a>
+                <a href="{{ path('app_register') }}">Créer un compte</a>
+            {% endif %}
+        </section>
+    </main>
+{% endblock %}

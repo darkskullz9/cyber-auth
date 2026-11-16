@@ -16,6 +16,7 @@ class UserRolesFormType extends AbstractType
             ->add('roles', ChoiceType::class, [
                 'label' => 'Privilèges du compte',
                 'choices' => [
+                    'Manager' => 'ROLE_MANAGER',
                     'Administrateur' => 'ROLE_ADMIN',
                 ],
                 'multiple' => true,

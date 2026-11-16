@@ -81,9 +81,12 @@ final class AdminController extends AbstractController
         $form = $this->createForm(UserRolesFormType::class, $user);
 
         $form->get('roles')->setData(
-            in_array('ROLE_ADMIN', $user->getRoles(), true)
-                ? ['ROLE_ADMIN']
-                : []
+            array_values(
+                array_intersect(
+                    ['ROLE_MANAGER', 'ROLE_ADMIN'],
+                    $user->getRoles()
+                )
+            )
         );
 
         $form->handleRequest($request);

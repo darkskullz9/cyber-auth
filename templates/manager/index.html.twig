@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Espace Manager - Cyber Auth{% endblock %}
+
+{% block body %}
+    <main>
+        <h1>Espace Manager</h1>
+        <p>Consultation des utilisateurs et de leur historique de connexion.</p>
+
+        <section>
+            <h2>Liste des utilisateurs</h2>
+
+            {% if users is empty %}
+                <p>Aucun utilisateur enregistré.</p>
+            {% else %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                            <th>Email</th>
+                            <th>Statut</th>
+                            <th>Rôles</th>
+                            <th>Historique des connexions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                            <tr>
+                                <td>{{ user.id }}</td>
+                                <td>{{ user.nom }}</td>
+                                <td>{{ user.prenom }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>
+                                    {{ user.isSuspended ? 'Suspendu' : 'Actif' }}
+                                </td>
+                                <td>{{ user.roles|join(', ') }}</td>
+                                <td>
+                                    {% set histories = loginHistoriesByUserId[user.id] ?? [] %}
+
+                                    {% if histories is empty %}
+                                        <p>Aucune connexion enregistrée.</p>
+                                    {% else %}
+                                        <ul>
+                                            {% for history in histories %}
+                                                <li>
+                                                    {{ history.loggedAt|date('d/m/Y à H:i:s') }}
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </section>
+    </main>
+{% endblock %}

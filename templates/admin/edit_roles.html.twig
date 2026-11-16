@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des privilèges{% endblock %}
+
+{% block body %}
+    <h1>Gestion des privilèges</h1>
+
+    <p>
+        Gestion du compte :
+        <strong>{{ user.prenom }} {{ user.nom }}</strong>
+    </p>
+
+    {{ form_start(rolesForm) }}
+        {{ form_row(rolesForm.roles) }}
+
+        <button type="submit">Enregistrer les privilèges</button>
+    {{ form_end(rolesForm) }}
+
+    <a href="{{ path('app_admin') }}">Retour à l'administration</a>
+{% endblock %}
