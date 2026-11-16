@@ -4,11 +4,16 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Doctrine\ORM\EntityManagerInterface;
 
+
+use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Repository\LoginHistoryRepository;
+use App\Form\UserEditFormType;
 
 #[IsGranted('ROLE_ADMIN')]
 final class AdminController extends AbstractController
@@ -37,5 +42,87 @@ final class AdminController extends AbstractController
             'users' => $users,
             'loginHistoriesByUserId' => $loginHistoriesByUserId,
         ]);
+    }
+
+    #[Route('/admin/user/{id}/edit', name: 'app_admin_user_edit', methods: ['GET', 'POST'])]
+    public function edit(
+        User $user,
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): Response {
+        $form = $this->createForm(UserEditFormType::class, $user);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            $this->addFlash(
+                'success',
+                'Les informations de l’utilisateur ont été modifiées.'
+            );
+
+            return $this->redirectToRoute('app_admin');
+        }
+
+        return $this->render('admin/edit_user.html.twig', [
+            'userForm' => $form,
+            'user' => $user,
+        ]);
+    }
+
+    #[Route('/admin/user/{id}/delete', name: 'app_admin_user_delete', methods: ['POST'])]
+    public function delete(
+        User $user,
+        Request $request,
+        EntityManagerInterface $entityManager,
+        LoginHistoryRepository $loginHistoryRepository
+    ): Response {
+        if (!$this->isCsrfTokenValid(
+            'delete-user-' . $user->getId(),
+            $request->request->get('_token')
+        )) {
+            throw $this->createAccessDeniedException('Jeton CSRF invalide.');
+        }
+
+        if ($this->getUser() === $user) {
+            $this->addFlash(
+                'error',
+                'Vous ne pouvez pas supprimer votre propre compte.'
+            );
+
+            return $this->redirectToRoute('app_admin');
+        }
+
+        $connection = $entityManager->getConnection();
+
+        $connection->beginTransaction();
+
+        try {
+            $loginHistories = $loginHistoryRepository->findBy([
+                'user' => $user,
+            ]);
+
+            foreach ($loginHistories as $loginHistory) {
+                $entityManager->remove($loginHistory);
+            }
+
+
+            $entityManager->remove($user);
+            $entityManager->flush();
+
+            $entityManager->commit();
+        } catch (\Throwable $exception) {
+            $connection->rollback();
+
+            throw $exception;
+        }
+
+        $this->addFlash(
+            'success',
+            'L’utilisateur et son historique de connexion ont été supprimés.'
+        );
+
+        return $this->redirectToRoute('app_admin');
     }
 }
