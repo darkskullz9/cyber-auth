@@ -56,7 +56,7 @@ class UserEditFormType extends AbstractType
                 'label' => 'Code postal',
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(max: 10),
+                    new Assert\Length(max: 5),
                 ],
             ])
             ->add('isSuspended', CheckboxType::class, [
