@@ -271,16 +271,4 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
-    public function removeLoginHistory(LoginHistory $loginHistory): static
-    {
-        if ($this->loginHistories->removeElement($loginHistory)) {
-            // set the owning side to null (unless already changed)
-            if ($loginHistory->getUser() === $this) {
-                $loginHistory->setUser(null);
-            }
-        }
-
-        return $this;
-    }
 }
