@@ -7,13 +7,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Form\FormError;
 use Doctrine\ORM\EntityManagerInterface;
-
 
 use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Repository\LoginHistoryRepository;
 use App\Form\UserEditFormType;
+use App\Form\UserRolesFormType;
 
 #[IsGranted('ROLE_ADMIN')]
 final class AdminController extends AbstractController
@@ -67,6 +68,49 @@ final class AdminController extends AbstractController
 
         return $this->render('admin/edit_user.html.twig', [
             'userForm' => $form,
+            'user' => $user,
+        ]);
+    }
+
+    #[Route('/admin/user/{id}/roles', name: 'app_admin_user_roles', methods: ['GET', 'POST'])]
+    public function editRoles(
+        User $user,
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): Response {
+        $form = $this->createForm(UserRolesFormType::class, $user);
+
+        $form->get('roles')->setData(
+            in_array('ROLE_ADMIN', $user->getRoles(), true)
+                ? ['ROLE_ADMIN']
+                : []
+        );
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $selectedRoles = $form->get('roles')->getData();
+
+            if ($user === $this->getUser() && !in_array('ROLE_ADMIN', $selectedRoles, true)) {
+                $form->get('roles')->addError(
+                    new FormError('Vous ne pouvez pas retirer vos propres privilèges administrateur.')
+                );
+            } else {
+                $user->setRoles($selectedRoles);
+
+                $entityManager->flush();
+
+                $this->addFlash(
+                    'success',
+                    'Les privilèges de l’utilisateur ont été modifiés.'
+                );
+
+                return $this->redirectToRoute('app_admin');
+            }
+        }
+
+        return $this->render('admin/edit_roles.html.twig', [
+            'rolesForm' => $form,
             'user' => $user,
         ]);
     }
