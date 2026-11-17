@@ -22,7 +22,7 @@
                     Vous êtes connecté(e) en tant que 
                     <strong>{{ app.user.userIdentifier }}</strong>, 
                 </p>
-                <a href="{{ logout_path() }} class="btn btn-primary">Déconnexion</a>
+                <a href="{{ logout_path() }}" class="btn btn-primary">Déconnexion</a>
             </div>
         {% else %}
             <form method="post" class="cyber-form">
