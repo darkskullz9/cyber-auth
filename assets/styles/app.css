@@ -255,7 +255,7 @@ nav a:first-child {
 
 /* Alertes & Messages */
 .alert-error,
-.cyber-form > ul {
+.cyber-form>ul {
     margin-bottom: 20px;
     padding: 12px 15px;
     background: rgba(239, 51, 51, 0.08);
@@ -292,7 +292,7 @@ nav a:first-child {
     gap: 8px;
 }
 
-.form-group > label {
+.form-group>label {
     color: var(--color-text);
     font-weight: 700;
     letter-spacing: 1px;
@@ -349,7 +349,7 @@ nav a:first-child {
 }
 
 /* Liste de choix Symfony (Gestion des privilèges) */
-.choice-group > div {
+.choice-group>div {
     display: grid;
     grid-template-columns: auto 1fr;
     align-items: center;
@@ -359,14 +359,14 @@ nav a:first-child {
     border: 1px solid var(--color-border);
 }
 
-.choice-group > div label {
+.choice-group>div label {
     color: var(--color-text);
     font-weight: 700;
     cursor: pointer;
 }
 
 /* Erreurs par champ */
-.form-group > ul {
+.form-group>ul {
     margin-top: 6px;
     padding: 10px 14px 10px 28px;
     list-style: disc;
@@ -457,7 +457,7 @@ nav a:first-child {
     text-transform: uppercase;
 }
 
-.profile-card > p {
+.profile-card>p {
     margin-bottom: 20px;
     color: var(--color-muted);
 }
@@ -573,12 +573,14 @@ nav a:first-child {
     border-color: rgba(239, 51, 51, 0.35);
 }
 
-/* Historique des connexions (sans scroll) */
+/* Historique des connexions (défilement interne) */
 .history-list {
     display: flex;
     flex-direction: column;
     gap: 8px;
     list-style: none;
+    max-height: 180px;
+    overflow-y: auto;
 }
 
 .history-item {
@@ -649,6 +651,7 @@ nav a:first-child {
 }
 
 @media (max-width: 600px) {
+
     .form-panel,
     .profile-container,
     .home-panel {
