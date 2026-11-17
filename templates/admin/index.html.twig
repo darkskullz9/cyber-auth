@@ -3,84 +3,94 @@
 {% block title %}Administration - Cyber Auth{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <h1>Administration</h1>
+    <section class="admin-container" aria-labelledby="admin-title">
+        <header class="admin-header">
+            <h1 id="admin-title">Administration</h1>
+            <p>Gestion des utilisateurs et des autorisations de la plateforme.</p>
+        </header>
 
-        <h2>Gestion des utilisateurs</h2>
+        <section class="admin-users" aria-labelledby="users-title">
+            <h2 id="users-title">Gestion des utilisateurs</h2>
 
-        <p>Nombre d'utilisateurs : {{ users|length }}</p>
+            <p class="admin-user-count">
+                Nombre d'utilisateurs :
+                <strong>{{ users|length }}</strong>
+            </p>
 
-        {% if users is empty %}
-            <p>Aucun utilisateur enregistré.</p>
-        {% else %}
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nom</th>
-                        <th>Prénom</th>
-                        <th>Email</th>
-                        <th>Rôles</th>
-                        <th>Statut</th>
-                        <th>Historique des connexions</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
+            {% if users is empty %}
+                <p>Aucun utilisateur enregistré.</p>
+            {% else %}
+                <div class="admin-table-wrapper">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nom</th>
+                                <th>Prénom</th>
+                                <th>Email</th>
+                                <th>Rôles</th>
+                                <th>Statut</th>
+                                <th>Historique des connexions</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
 
-                <tbody>
-                    {% for user in users %}
-                        <tr>
-                            <td>{{ user.id }}</td>
-                            <td>{{ user.nom }}</td>
-                            <td>{{ user.prenom }}</td>
-                            <td>{{ user.email }}</td>
-                            <td>{{ user.roles|join(', ') }}</td>
-                            <td>{{ user.isSuspended ? 'Suspendu' : 'Actif' }}</td>
-                            <td>
-                                {% set histories = loginHistoriesByUserId[user.id] ?? [] %}
+                        <tbody>
+                            {% for user in users %}
+                                <tr>
+                                    <td>{{ user.id }}</td>
+                                    <td>{{ user.nom }}</td>
+                                    <td>{{ user.prenom }}</td>
+                                    <td>{{ user.email }}</td>
+                                    <td>{{ user.roles|join(', ') }}</td>
+                                    <td>{{ user.isSuspended ? 'Suspendu' : 'Actif' }}</td>
+                                    <td>
+                                        {% set histories = loginHistoriesByUserId[user.id] ?? [] %}
 
-                                {% if histories is empty %}
-                                    <span>Aucune connexion enregistrée</span>
-                                {% else %}
-                                    <ul>
-                                        {% for history in histories %}
-                                            <li>
-                                                {{ history.loggedAt|date('d/m/Y à H:i:s') }}
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                {% endif %}
-                            </td>
+                                        {% if histories is empty %}
+                                            <span>Aucune connexion enregistrée</span>
+                                        {% else %}
+                                            <ul>
+                                                {% for history in histories %}
+                                                    <li>
+                                                        {{ history.loggedAt|date('d/m/Y à H:i:s') }}
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% endif %}
+                                    </td>
 
-                            <td>
-                                <a href="{{ path('app_admin_user_edit', {id: user.id}) }}">
-                                    Modifier
-                                </a>
+                                    <td>
+                                        <a href="{{ path('app_admin_user_edit', {id: user.id}) }}">
+                                            Modifier
+                                        </a>
 
-                                <a href="{{ path('app_admin_user_roles', {id: user.id}) }}">
-                                    Gérer les rôles
-                                </a>
+                                        <a href="{{ path('app_admin_user_roles', {id: user.id}) }}">
+                                            Gérer les rôles
+                                        </a>
 
-                                <form
-                                    method="post"
-                                    action="{{ path('app_admin_user_delete', {id: user.id}) }}"
-                                    onsubmit="return confirm('Voulez-vous vraiment supprimer cet utilisateur et son historique de connexion ?');"
-                                >
-                                    <input
-                                        type="hidden"
-                                        name="_token"
-                                        value="{{ csrf_token('delete-user-' ~ user.id) }}"
-                                    >
+                                        <form
+                                            method="post"
+                                            action="{{ path('app_admin_user_delete', {id: user.id}) }}"
+                                            onsubmit="return confirm('Voulez-vous vraiment supprimer cet utilisateur et son historique de connexion ?');"
+                                        >
+                                            <input
+                                                type="hidden"
+                                                name="_token"
+                                                value="{{ csrf_token('delete-user-' ~ user.id) }}"
+                                            >
 
-                                    <button type="submit">
-                                        Supprimer
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% endif %}
-    </div>
+                                            <button type="submit">
+                                                Supprimer
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        </section>
+    </section>
 {% endblock %}
