@@ -3,10 +3,10 @@
 {% block title %}Mon profil - Cyber Auth{% endblock %}
 
 {% block body %}
-    <section class="profile-container" aria-labelledby="profile-title">
+    <section class="surface-panel profile-container" aria-labelledby="profile-title">
 
-        <header class="profile-header">
-            <span class="auth-label">// ESPACE PERSONNEL</span>
+        <header class="panel-header">
+            <span class="section-kicker">// ESPACE PERSONNEL</span>
             <h1 id="profile-title">Mon profil</h1>
             <p>Consultez les informations associées à votre compte.</p>
         </header>
@@ -15,7 +15,7 @@
 
             <div class="profile-card-header">
                 <h2 id="identity-title">Informations personnelles</h2>
-                <span class="profile-status">Compte actif</span>
+                <span class="status-badge status-active">Compte actif</span>
             </div>
 
             <dl class="profile-details">
@@ -60,14 +60,14 @@
 
             <p>Protégez votre compte en renouvelant régulièrement votre mot de passe.</p>
 
-            <a href="{{ path('app_change_password') }}" class="profile-action">
+            <a href="{{ path('app_change_password') }}" class="btn">
                 Modifier mon mot de passe
             </a>
         </section>
 
-        <div class="profile-actions">
-            <a href="{{ path('app_home') }}">Retour à l'accueil</a>
-            <a href="{{ path('app_logout') }}" class="profile-logout">
+        <div class="profile-actions btn-group">
+            <a href="{{ path('app_home') }}" class="btn">Retour à l'accueil</a>
+            <a href="{{ path('app_logout') }}" class="btn btn-danger">
                 Déconnexion
             </a>
         </div>

@@ -3,25 +3,28 @@
 {% block title %}Administration - Cyber Auth{% endblock %}
 
 {% block body %}
-    <section class="admin-container" aria-labelledby="admin-title">
-        <header class="admin-header">
+    <section class="page-container" aria-labelledby="admin-title">
+        <header class="page-header">
+            <span class="section-kicker">// ADMINISTRATION</span>
             <h1 id="admin-title">Administration</h1>
             <p>Gestion des utilisateurs et des autorisations de la plateforme.</p>
         </header>
 
         <section class="admin-users" aria-labelledby="users-title">
-            <h2 id="users-title">Gestion des utilisateurs</h2>
+            <h2 id="users-title" class="section-title">Gestion des utilisateurs</h2>
 
-            <p class="admin-user-count">
+            <p class="stat-badge">
                 Nombre d'utilisateurs :
                 <strong>{{ users|length }}</strong>
             </p>
 
             {% if users is empty %}
-                <p>Aucun utilisateur enregistré.</p>
+                <div class="surface-panel empty-state">
+                    <p>Aucun utilisateur enregistré.</p>
+                </div>
             {% else %}
-                <div class="admin-table-wrapper">
-                    <table class="admin-table">
+                <div class="data-table-wrapper">
+                    <table class="data-table">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -43,17 +46,22 @@
                                     <td>{{ user.prenom }}</td>
                                     <td>{{ user.email }}</td>
                                     <td>{{ user.roles|join(', ') }}</td>
-                                    <td>{{ user.isSuspended ? 'Suspendu' : 'Actif' }}</td>
+                                    <td>
+                                        <span class="status-badge {{ user.isSuspended ? 'status-suspended' : 'status-active' }}">
+                                            {{ user.isSuspended ? 'Suspendu' : 'Actif' }}
+                                        </span>
+                                    </td>
                                     <td>
                                         {% set histories = loginHistoriesByUserId[user.id] ?? [] %}
 
                                         {% if histories is empty %}
-                                            <span>Aucune connexion enregistrée</span>
+                                            <span class="history-empty">Aucune connexion enregistrée</span>
                                         {% else %}
-                                            <ul>
+                                            <ul class="history-list">
                                                 {% for history in histories %}
-                                                    <li>
-                                                        {{ history.loggedAt|date('d/m/Y à H:i:s') }}
+                                                    <li class="history-item">
+                                                        <span class="history-date">{{ history.loggedAt|date('d/m/Y') }}</span>
+                                                        <span class="history-time">{{ history.loggedAt|date('H:i:s') }}</span>
                                                     </li>
                                                 {% endfor %}
                                             </ul>
@@ -61,29 +69,31 @@
                                     </td>
 
                                     <td>
-                                        <a href="{{ path('app_admin_user_edit', {id: user.id}) }}">
-                                            Modifier
-                                        </a>
+                                        <div class="table-actions">
+                                            <a href="{{ path('app_admin_user_edit', {id: user.id}) }}" class="btn btn-sm">
+                                                Modifier
+                                            </a>
 
-                                        <a href="{{ path('app_admin_user_roles', {id: user.id}) }}">
-                                            Gérer les rôles
-                                        </a>
+                                            <a href="{{ path('app_admin_user_roles', {id: user.id}) }}" class="btn btn-sm">
+                                                Gérer les rôles
+                                            </a>
 
-                                        <form
-                                            method="post"
-                                            action="{{ path('app_admin_user_delete', {id: user.id}) }}"
-                                            onsubmit="return confirm('Voulez-vous vraiment supprimer cet utilisateur et son historique de connexion ?');"
-                                        >
-                                            <input
-                                                type="hidden"
-                                                name="_token"
-                                                value="{{ csrf_token('delete-user-' ~ user.id) }}"
+                                            <form
+                                                method="post"
+                                                action="{{ path('app_admin_user_delete', {id: user.id}) }}"
+                                                onsubmit="return confirm('Voulez-vous vraiment supprimer cet utilisateur et son historique de connexion ?');"
                                             >
+                                                <input
+                                                    type="hidden"
+                                                    name="_token"
+                                                    value="{{ csrf_token('delete-user-' ~ user.id) }}"
+                                                >
 
-                                            <button type="submit">
-                                                Supprimer
-                                            </button>
-                                        </form>
+                                                <button type="submit" class="btn btn-sm btn-danger">
+                                                    Supprimer
+                                                </button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                             {% endfor %}

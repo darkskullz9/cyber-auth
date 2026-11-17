@@ -3,32 +3,41 @@
 {% block title %}Modifier un utilisateur - Cyber Auth{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <h1>Modifier un utilisateur</h1>
+    <section class="surface-panel form-panel" aria-labelledBy="edit-user-title">
+        <header class="panel-header">
+            <span class="section-kicker">// GESTION DES UTILISATEURS</span>
+            <h1 id="edit-user-title">Modifier un utilisateur</h1>
+            <p>
+                Modification du compte :
+                <strong>{{ user.email }}</strong>
+            </p>
+        </header>
 
-        <p>
-            Modification du compte :
-            <strong>{{ user.email }}</strong>
+            {{ form_start(userForm, { attr: { class: 'cyber-form' } }) }}
+                {{ form_row(userForm.email, {row_attr: { class: 'form-group' } }) }}
+                {{ form_row(userForm.nom, {row_attr: { class: 'form-group' } }) }}
+                {{ form_row(userForm.prenom, {row_attr: { class: 'form-group' } }) }}
+                {{ form_row(userForm.adresse, {row_attr: { class: 'form-group' } }) }}
+                {{ form_row(userForm.ville, {row_attr: { class: 'form-group' } }) }}
+
+                {{ form_row(userForm.codePostal, {
+                    label: 'Code postal', 
+                    row_attr: { class: 'form-group' } 
+                }) }}
+                
+                {{ form_row(userForm.isSuspended, {
+                    label: 'Compte suspendu', 
+                    row_attr: { class: 'form-group' } 
+                }) }}
+
+                <button type="submit" class="btn btn-primary">
+                    Enregistrer les modifications
+                </button>
+
+            {{ form_end(userForm) }}
+
+        <p class="form-footer">
+            <a href="{{ path('app_admin') }}"> Retour à l'administration</a>
         </p>
-
-        {{ form_start(userForm) }}
-
-            {{ form_row(userForm.email) }}
-            {{ form_row(userForm.nom) }}
-            {{ form_row(userForm.prenom) }}
-            {{ form_row(userForm.adresse) }}
-            {{ form_row(userForm.ville) }}
-            {{ form_row(userForm.codePostal) }}
-            {{ form_row(userForm.isSuspended) }}
-
-            <button type="submit">
-                Enregistrer les modifications
-            </button>
-
-        {{ form_end(userForm) }}
-
-        <a href="{{ path('app_admin') }}">
-            Retour à l'administration
-        </a>
-    </div>
+    </section>
 {% endblock %}

@@ -3,15 +3,15 @@
 {% block title %}Connexion - Cyber Auth{% endblock %}
 
 {% block body %}
-    <section class="auth-container" aria-labelledby="login-title">
-        <header class="auth-header">
-            <span class="auth-label">// IDENTIFICATION REQUISE</span>
+    <section class="surface-panel form-panel" aria-labelledby="login-title">
+        <header class="panel-header">
+            <span class="section-kicker">// IDENTIFICATION REQUISE</span>
             <h1 id="login-title">Connexion</h1>
             <p>Connectez-vous à votre espace personnel.</p>
         </header>
 
         {% if error %}
-            <div class="auth-error" role="alert">
+            <div class="alert-error" role="alert">
                 {{ error.messageKey|trans(error.messageData, 'security') }}
             </div>
         {% endif %}
@@ -22,10 +22,10 @@
                     Vous êtes connecté(e) en tant que 
                     <strong>{{ app.user.userIdentifier }}</strong>, 
                 </p>
-                <a href="{{ logout_path() }}">Déconnexion</a>
+                <a href="{{ logout_path() }} class="btn btn-primary">Déconnexion</a>
             </div>
         {% else %}
-            <form method="post" class="auth-form">
+            <form method="post" class="cyber-form">
                 <div class="form-group">
                     <label for="inputEmail">Email</label>
                     <input 
@@ -33,9 +33,9 @@
                         value="{{ last_username }}" 
                         name="email" 
                         id="inputEmail" 
-                        class="form-control" 
                         autocomplete="email" 
-                        required autofocus 
+                        required 
+                        autofocus 
                     />
                 </div>
 
@@ -45,7 +45,6 @@
                         type="password" 
                         name="password" 
                         id="inputPassword" 
-                        class="form-control" 
                         autocomplete="current-password" 
                         required 
                     />
@@ -58,7 +57,7 @@
                     value="{{ csrf_token('authenticate') }}" 
                 />
 
-                <div class="remember-group">
+                <div class="checkbox-group">
                     <label for="rememberMe">
                         <input 
                             type="checkbox" 
@@ -69,11 +68,11 @@
                     </label>
                 </div>
 
-                <button class="auth-submit" type="submit">
+                <button class="btn btn-primary" type="submit">
                     Se connecter
                 </button>
 
-                <p class="auth-register">
+                <p class="form-footer">
                     Vous n'avez pas encore de compte ? 
                     <a href="{{ path('app_register') }}">Créer un compte</a>
                 </p>

@@ -3,21 +3,22 @@
 {% block title %}Espace Manager - Cyber Auth{% endblock %}
 
 {% block body %}
-    <section class="manager-container" aria-labelledby="manager-title">
-        <header class="manager-header">
+    <section class="page-container" aria-labelledby="manager-title">
+        <header class="page-header">
+            <span class="section-kicker">// SUPERVISION</span>
             <h1 id="manager-title">Espace Manager</h1>
             <p>Consultation des utilisateurs et de leur historique de connexion.</p>
         </header>
 
-        <h2>Liste des utilisateurs</h2>
+        <h2 class="section-title">Liste des utilisateurs</h2>
 
         {% if users is empty %}
-            <div class="manager-empty">
+            <div class="surface-panel empty-state">
                 <p>Aucun utilisateur enregistré.</p>
             </div>
         {% else %}
-            <div class="manager-table-wrapper">
-                <table class="manager-table">
+            <div class="data-table-wrapper">
+                <table class="data-table">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -38,9 +39,9 @@
                                 <td>{{ user.email }}</td>
                                 <td>
                                     {% if user.isSuspended %}
-                                        <span class="manager-status manager-status-suspended">Suspendu</span>
+                                        <span class="status-badge status-suspended">Suspendu</span>
                                     {% else %}
-                                        <span class="manager-status manager-status-active">Actif</span>
+                                        <span class="status-badge status-active">Actif</span>
                                     {% endif %}
                                 </td>
                                 <td>{{ user.roles|join(', ') }}</td>
@@ -48,15 +49,15 @@
                                     {% set histories = loginHistoriesByUserId[user.id] ?? [] %}
 
                                     {% if histories is empty %}
-                                        <p class="manager-history-empty">Aucune connexion enregistrée.</p>
+                                        <p class="history-empty">Aucune connexion enregistrée.</p>
                                     {% else %}
-                                        <ul class="manager-history-list">
+                                        <ul class="history-list">
                                             {% for history in histories %}
-                                                <li class="manager-history-item">
-                                                    <span class="manager-history-date">
+                                                <li class="history-item">
+                                                    <span class="history-date">
                                                         {{ history.loggedAt|date('d/m/Y') }}
                                                     </span>
-                                                    <span class="manager-history-time">
+                                                    <span class="history-time">
                                                         {{ history.loggedAt|date('H:i:s') }}
                                                     </span>
                                                 </li>

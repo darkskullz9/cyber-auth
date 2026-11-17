@@ -1,20 +1,31 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Gestion des privilèges{% endblock %}
+{% block title %}Gestion des privilèges - Cyber Auth{% endblock %}
 
 {% block body %}
-    <h1>Gestion des privilèges</h1>
+    <section class="surface-panel form-panel" aria-labelledBy="roles-title">
+        <header class="panel-header">
+            <span class="section-kicker">// CONTRÔLE D'ACCÈS</span>
+            <h1 id="roles-titles">Gestion des privilèges</h1>
+            <p>
+                Gestion du compte :
+                <strong>{{ user.prenom }} {{ user.nom }}</strong>
+            </p>
+        </header>
 
-    <p>
-        Gestion du compte :
-        <strong>{{ user.prenom }} {{ user.nom }}</strong>
-    </p>
+        {{ form_start(rolesForm, { attr: { class: 'cyber-form' } }) }}
+            {{ form_row(rolesForm.roles, {
+                label: 'Privilèges',
+                row_attr: { class: 'form-group choice-group' }
+            }) }}
 
-    {{ form_start(rolesForm) }}
-        {{ form_row(rolesForm.roles) }}
+            <button type="submit" class="btn btn-primary">
+                Enregistrer les privilèges
+            </button>
+        {{ form_end(rolesForm) }}
 
-        <button type="submit">Enregistrer les privilèges</button>
-    {{ form_end(rolesForm) }}
-
-    <a href="{{ path('app_admin') }}">Retour à l'administration</a>
+        <p class="form-footer">
+            <a href="{{ path('app_admin') }}">Retour à l'administration</a>
+        </p>
+    </section>
 {% endblock %}

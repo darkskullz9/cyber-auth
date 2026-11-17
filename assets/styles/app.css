@@ -35,10 +35,12 @@
     --color-text: #e8e8e8;
     --color-muted: #85818b;
 
+    --color-success: #8bd49c;
+    --color-danger-text: #ff7777;
+
     --color-border: rgba(239, 51, 51, 0.25);
 
     --font-main: 'Rajdhani', sans-serif;
-
     --transition-fast: 0.2s ease;
 }
 
@@ -59,7 +61,6 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-
     background: var(--color-bg);
     color: var(--color-text);
     font-family: var(--font-main);
@@ -79,7 +80,7 @@ textarea {
     font: inherit;
 }
 
-/* GLOBAL LAYOUT */
+/* GLOBAL LAYOUT & NAVIGATION */
 
 main {
     flex: 1;
@@ -87,16 +88,12 @@ main {
     padding: 30px;
 }
 
-/* MAIN NAVIGATION */
-
 nav {
     display: flex;
     align-items: center;
     gap: 25px;
-
     min-height: 65px;
     padding: 12px 30px;
-
     background: var(--color-surface);
     border-bottom: 1px solid var(--color-border);
 }
@@ -106,7 +103,6 @@ nav a {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 2px;
-
     transition: color var(--transition-fast);
 }
 
@@ -120,152 +116,68 @@ nav a:first-child {
     font-size: 24px;
 }
 
-/* RESPONSIVE GLOBAL */
-
-@media (max-width: 768px) {
-    nav {
-        flex-wrap: wrap;
-        gap: 12px 18px;
-        padding: 15px 20px;
-    }
-
-    nav a:first-child {
-        width: 100%;
-        margin-right: 0;
-    }
-
-    main {
-        padding: 20px;
-    }
-}
-
 /* =========================================
-   HOME — CYBER AUTH INTERFACE
+   SHARED COMPONENTS
    ========================================= */
 
-main > header {
-    margin-bottom: 35px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid var(--color-border);
-    position: relative;
-}
-
-main > header::before {
-    content: "// SYSTEM OVERVIEW";
+/* Kicker / Sur-titre */
+.section-kicker {
     display: block;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     color: var(--color-primary);
     font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 3px;
-}
-
-main > header h1 {
-    color: var(--color-text);
-    font-size: clamp(32px, 5vw, 48px);
     font-weight: 700;
     letter-spacing: 3px;
     text-transform: uppercase;
 }
 
-main > header p {
-    margin-top: 5px;
-    color: var(--color-muted);
-    font-size: 18px;
+/* Conteneurs de page */
+.page-container {
+    width: min(1200px, calc(100% - 40px));
+    margin: 40px auto;
 }
 
-/* Welcome panel */
-
-main > section {
-    position: relative;
-    max-width: 850px;
-    padding: 30px;
+.surface-panel {
     background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-left: 3px solid var(--color-primary);
 }
 
-main > section h2 {
-    margin-bottom: 15px;
-    color: var(--color-primary);
-    font-size: 26px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-}
-
-main > section > p {
-    margin-bottom: 18px;
-    color: var(--color-muted);
-}
-
-/* Action links */
-
-main > section a {
-    display: inline-block;
-    margin: 8px 8px 0 0;
-    padding: 10px 20px;
-    background: var(--color-surface-light);
-    border: 1px solid var(--color-border);
-    color: var(--color-text);
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    transition:
-        background var(--transition-fast),
-        color var(--transition-fast),
-        border-color var(--transition-fast);
-}
-
-main > section a:hover {
-    background: var(--color-primary);
-    border-color: var(--color-primary);
-    color: var(--color-bg);
-}
-
-/* Responsive */
-
-@media (max-width: 600px) {
-    main > section {
-        padding: 20px;
-    }
-
-    main > section a {
-        display: block;
-        width: 100%;
-        text-align: center;
-    }
-}
-
-/* =========================================
-   AUTHENTICATION — LOGIN
-   ========================================= */
-
-.auth-container {
+.form-panel {
     width: 100%;
-    max-width: 520px;
-    margin: 50px auto;
+    max-width: 540px;
+    margin: 45px auto;
     padding: 35px;
 }
 
-.auth-header {
-    margin-bottom: 30px;
+/* En-têtes */
+.page-header {
+    margin-bottom: 35px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--color-border);
 }
 
-.auth-header h1 {
+.page-header h1,
+.panel-header h1 {
     color: var(--color-text);
-    font-size: 34px;
+    font-size: clamp(30px, 4vw, 44px);
     font-weight: 700;
     letter-spacing: 2px;
     text-transform: uppercase;
 }
 
-.auth-header p {
+.page-header p,
+.panel-header p {
     margin-top: 8px;
     color: var(--color-muted);
+    font-size: 17px;
 }
 
-.auth-header h1::after {
+.panel-header {
+    margin-bottom: 28px;
+}
+
+.panel-header h1::after {
     content: "";
     display: block;
     width: 55px;
@@ -274,9 +186,101 @@ main > section a:hover {
     background: var(--color-primary);
 }
 
-/* Form fields */
+.section-title {
+    margin-bottom: 20px;
+    color: var(--color-text);
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
 
-.auth-form {
+/* Boutons */
+.btn {
+    display: inline-block;
+    padding: 10px 18px;
+    background: var(--color-surface-light);
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-align: center;
+    text-transform: uppercase;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+        background var(--transition-fast),
+        border-color var(--transition-fast),
+        color var(--transition-fast);
+}
+
+.btn:hover {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-bg);
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 13px 20px;
+    background: var(--color-primary-dark);
+    border-color: var(--color-primary);
+    font-size: 16px;
+    letter-spacing: 2px;
+}
+
+.btn-danger {
+    background: rgba(239, 51, 51, 0.08);
+    border-color: rgba(239, 51, 51, 0.45);
+    color: var(--color-danger-text);
+}
+
+.btn-danger:hover {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-bg);
+}
+
+.btn-sm {
+    padding: 7px 12px;
+    font-size: 13px;
+}
+
+.btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+/* Alertes & Messages */
+.alert-error,
+.cyber-form > ul {
+    margin-bottom: 20px;
+    padding: 12px 15px;
+    background: rgba(239, 51, 51, 0.08);
+    border: 1px solid var(--color-primary);
+    border-left: 3px solid var(--color-primary);
+    color: var(--color-danger-text);
+    font-size: 15px;
+    list-style: none;
+}
+
+.alert-success {
+    margin-bottom: 20px;
+    padding: 12px 15px;
+    background: rgba(139, 212, 156, 0.08);
+    border: 1px solid rgba(139, 212, 156, 0.4);
+    border-left: 3px solid var(--color-success);
+    color: var(--color-success);
+    font-size: 15px;
+}
+
+/* =========================================
+   FORMS (AUTH & ADMIN EDIT / ROLES)
+   ========================================= */
+
+.cyber-form {
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -288,23 +292,23 @@ main > section a:hover {
     gap: 8px;
 }
 
-.form-group label {
+.form-group > label {
     color: var(--color-text);
     font-weight: 700;
     letter-spacing: 1px;
 }
 
-.form-group input {
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group select,
+.form-group textarea {
     width: 100%;
     padding: 13px 15px;
-
     background: var(--color-bg);
     border: 1px solid var(--color-border);
-    border-radius: 0;
-
     color: var(--color-text);
     outline: none;
-
     transition: border-color var(--transition-fast);
 }
 
@@ -313,13 +317,20 @@ main > section a:hover {
     opacity: 0.7;
 }
 
-.form-group input:focus {
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
     border-color: var(--color-primary);
 }
 
-/* Remember me */
+/* Checkbox simple */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
-.remember-group label {
+.checkbox-group label {
     display: inline-flex;
     align-items: center;
     gap: 10px;
@@ -327,68 +338,60 @@ main > section a:hover {
     cursor: pointer;
 }
 
-.remember-group input {
+.checkbox-group input[type="checkbox"],
+.choice-group input[type="checkbox"] {
     accent-color: var(--color-primary);
     width: 16px;
     height: 16px;
+    flex-shrink: 0;
+    margin: 0;
+    cursor: pointer;
 }
 
-/* Submit button */
+/* Liste de choix Symfony (Gestion des privilèges) */
+.choice-group > div {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 12px;
+    padding: 15px;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+}
 
-.auth-submit {
-    width: 100%;
-    padding: 13px 20px;
-
-    background: var(--color-primary-dark);
-    border: 1px solid var(--color-primary);
-    border-radius: 0;
-
+.choice-group > div label {
     color: var(--color-text);
     font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-
     cursor: pointer;
-    transition:
-        background var(--transition-fast),
-        color var(--transition-fast);
 }
 
-.auth-submit:hover {
-    background: var(--color-primary);
-    color: var(--color-bg);
+/* Erreurs par champ */
+.form-group > ul {
+    margin-top: 6px;
+    padding: 10px 14px 10px 28px;
+    list-style: disc;
+    background: rgba(239, 51, 51, 0.08);
+    border: 1px solid rgba(239, 51, 51, 0.35);
+    border-left: 3px solid var(--color-primary);
+    color: var(--color-danger-text);
+    font-size: 14px;
 }
 
-/* Registration link */
-
-.auth-register {
+/* Pied de formulaire */
+.form-footer {
+    margin-top: 22px;
     color: var(--color-muted);
     text-align: center;
 }
 
-.auth-register a {
+.form-footer a {
     color: var(--color-primary);
     font-weight: 700;
 }
 
-.auth-register a:hover {
+.form-footer a:hover {
     text-decoration: underline;
 }
-
-/* Authentication errors */
-
-.auth-error {
-    margin-bottom: 20px;
-    padding: 12px 15px;
-
-    background: rgba(239, 51, 51, 0.08);
-    border: 1px solid var(--color-primary);
-    border-left: 3px solid var(--color-primary);
-
-    color: var(--color-primary);
-}
-
-/* Existing session */
 
 .auth-session {
     display: flex;
@@ -396,51 +399,41 @@ main > section a:hover {
     gap: 15px;
 }
 
-.auth-session a {
-    color: var(--color-primary);
-    font-weight: 700;
-}
+/* =========================================
+   HOME
+   ========================================= */
 
-/* Responsive */
-
-@media (max-width: 600px) {
-    .auth-container {
-        margin: 20px auto;
-        padding: 22px;
-    }
-}
-
-/* Registration checkbox */
-
-.remember-group {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.remember-group input[type="checkbox"] {
-    flex-shrink: 0;
-    margin: 0;
-}
-
-
-/* ==============================
-   PROFILE PAGE
-============================== */
-
-.profile-container {
-    width: min(100% - 40px, 850px);
-    margin: 50px auto;
+.home-panel {
+    max-width: 850px;
     padding: 30px;
 }
 
-.profile-header {
-    margin-bottom: 30px;
+.home-panel h2 {
+    margin-bottom: 15px;
+    color: var(--color-primary);
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
 }
 
-.profile-header h1 {
-    margin: 8px 0;
-    font-size: 34px;
+.home-panel p {
+    margin-bottom: 18px;
+    color: var(--color-muted);
+}
+
+.home-panel .btn-group {
+    margin-top: 22px;
+}
+
+/* =========================================
+   PROFILE
+   ========================================= */
+
+.profile-container {
+    width: min(100% - 40px, 850px);
+    margin: 45px auto;
+    padding: 30px;
 }
 
 .profile-card {
@@ -459,26 +452,20 @@ main > section a:hover {
 }
 
 .profile-card-header h2 {
-    margin: 0;
     color: var(--color-primary);
     font-size: 22px;
     text-transform: uppercase;
 }
 
-.profile-status {
-    padding: 5px 12px;
-    border: 1px solid var(--color-border);
-    color: #8bd49c;
-    font-size: 13px;
-    font-weight: bold;
-    text-transform: uppercase;
+.profile-card > p {
+    margin-bottom: 20px;
+    color: var(--color-muted);
 }
 
 .profile-details {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 18px;
-    margin: 0;
 }
 
 .profile-detail {
@@ -495,301 +482,20 @@ main > section a:hover {
 }
 
 .profile-detail dd {
-    margin: 0;
     color: var(--color-text);
     font-size: 17px;
     overflow-wrap: anywhere;
 }
 
-.profile-card > p {
-    margin-bottom: 20px;
-    color: var(--color-muted);
-}
-
-.profile-action,
-.profile-actions a {
-    display: inline-block;
-    padding: 11px 16px;
-    border: 1px solid var(--color-border);
-    color: var(--color-text);
-    font-weight: bold;
-    text-decoration: none;
-    text-transform: uppercase;
-    transition: var(--transition-fast);
-}
-
-.profile-action:hover,
-.profile-actions a:hover {
-    border-color: var(--color-primary);
-    background: var(--color-primary);
-    color: white;
-}
-
 .profile-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
     margin-top: 25px;
 }
 
-.profile-logout {
-    border-color: rgba(239, 51, 51, 0.5) !important;
-}
+/* =========================================
+   TABLES (MANAGER & ADMINISTRATION)
+   ========================================= */
 
-@media (max-width: 600px) {
-    .profile-container {
-        padding: 20px;
-    }
-
-    .profile-details {
-        grid-template-columns: 1fr;
-    }
-
-    .profile-card-header {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-}
-
-/* ==============================
-   FORM SUCCESS MESSAGE
-============================== */
-
-.auth-success {
-    margin-bottom: 20px;
-    padding: 12px 15px;
-    border: 1px solid rgba(139, 212, 156, 0.4);
-    background: rgba(139, 212, 156, 0.08);
-    color: #8bd49c;
-    font-size: 15px;
-}
-
-/* ==============================
-   FORM VALIDATION ERRORS
-============================== */
-
-.form-group > ul {
-    display: block;
-    width: 100%;
-    margin: 8px 0 0;
-    padding: 10px 14px 10px 30px;
-
-    list-style: disc;
-    background: rgba(239, 51, 51, 0.08);
-    border: 1px solid rgba(239, 51, 51, 0.35);
-    border-left: 3px solid var(--color-primary);
-
-    color: #ff7777;
-    font-size: 14px;
-}
-
-.form-group > ul > li {
-    margin: 0;
-    color: #ff7777;
-}
-
-/* ========================================
-   MANAGER - TABLEAU DE BORD
-======================================== */
-
-.manager-container {
-    width: min(1200px, calc(100% - 40px));
-    margin: 50px auto;
-}
-
-.manager-header {
-    margin-bottom: 35px;
-}
-
-.manager-header h1 {
-    margin-bottom: 10px;
-    font-size: 36px;
-    color: var(--color-text);
-}
-
-.manager-header p {
-    color: var(--color-muted);
-    font-size: 17px;
-}
-
-.manager-container > h2 {
-    margin-bottom: 20px;
-    font-size: 25px;
-    color: var(--color-text);
-}
-
-.manager-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    font-size: 15px;
-}
-
-.manager-table th,
-.manager-table td {
-    padding: 15px;
-    text-align: left;
-    vertical-align: top;
-    border-bottom: 1px solid var(--color-border);
-}
-
-.manager-table th {
-    background: var(--color-surface-light);
-    color: var(--color-primary);
-    font-weight: 700;
-    white-space: nowrap;
-}
-
-.manager-table td {
-    color: var(--color-text);
-}
-
-.manager-table tbody tr:hover {
-    background: rgba(239, 51, 51, 0.05);
-}
-
-.manager-table tbody tr:last-child td {
-    border-bottom: none;
-}
-
-.manager-table ul {
-    margin: 0;
-    padding-left: 18px;
-}
-
-.manager-table li {
-    margin-bottom: 6px;
-    color: var(--color-muted);
-}
-
-.manager-table td p {
-    margin: 0;
-    color: var(--color-muted);
-    font-size: 14px;
-}
-
-.manager-table-wrapper {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: auto;
-}
-
-.manager-table {
-    width: 100%;
-    min-width: 850px;
-}
-
-/* Statuts des comptes - Manager */
-
-.manager-status {
-    display: inline-block;
-    padding: 4px 10px;
-    border: 1px solid;
-    font-size: 13px;
-    font-weight: 700;
-    white-space: nowrap;
-}
-
-.manager-status-active {
-    color: #8bd49c;
-    background: rgba(139, 212, 156, 0.08);
-    border-color: rgba(139, 212, 156, 0.35);
-}
-
-.manager-status-suspended {
-    color: #ff7777;
-    background: rgba(239, 51, 51, 0.08);
-    border-color: rgba(239, 51, 51, 0.35);
-}
-
-/* Historique des connexions - Manager */
-
-.manager-history-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-.manager-history-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 7px 10px;
-    background: var(--color-surface-light);
-    border-left: 2px solid var(--color-primary);
-}
-
-.manager-history-date {
-    color: var(--color-text);
-    white-space: nowrap;
-}
-
-.manager-history-time {
-    color: var(--color-muted);
-    font-size: 13px;
-    white-space: nowrap;
-}
-
-.manager-history-empty {
-    margin: 0;
-    color: var(--color-muted);
-    font-size: 13px;
-    font-style: italic;
-}
-
-/* État vide - Manager */
-
-.manager-empty {
-    padding: 30px 20px;
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-left: 3px solid var(--color-primary);
-    text-align: center;
-}
-
-.manager-empty p {
-    margin: 0;
-    color: var(--color-muted);
-    font-size: 16px;
-}
-
-
-/* ========================================
-   ADMINISTRATION
-======================================== */
-
-.admin-container {
-    width: min(1200px, calc(100% - 40px));
-    margin: 50px auto;
-}
-
-.admin-header {
-    margin-bottom: 35px;
-}
-
-.admin-header h1 {
-    margin-bottom: 10px;
-    color: var(--color-text);
-    font-size: 36px;
-}
-
-.admin-header p {
-    color: var(--color-muted);
-    font-size: 17px;
-}
-
-.admin-users > h2 {
-    margin-bottom: 20px;
-    color: var(--color-text);
-    font-size: 25px;
-}
-
-.admin-user-count {
+.stat-badge {
     display: inline-flex;
     align-items: center;
     gap: 10px;
@@ -801,7 +507,165 @@ main > section a:hover {
     font-size: 15px;
 }
 
-.admin-user-count strong {
+.stat-badge strong {
     color: var(--color-primary);
     font-size: 20px;
+}
+
+.data-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+}
+
+.data-table {
+    width: 100%;
+    min-width: 900px;
+    border-collapse: collapse;
+    font-size: 15px;
+}
+
+.data-table th,
+.data-table td {
+    padding: 15px;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.data-table th {
+    background: var(--color-surface-light);
+    color: var(--color-primary);
+    font-weight: 700;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.data-table tbody tr:hover {
+    background: rgba(239, 51, 51, 0.05);
+}
+
+.data-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Statuts */
+.status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border: 1px solid;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.status-active {
+    color: var(--color-success);
+    background: rgba(139, 212, 156, 0.08);
+    border-color: rgba(139, 212, 156, 0.35);
+}
+
+.status-suspended {
+    color: var(--color-danger-text);
+    background: rgba(239, 51, 51, 0.08);
+    border-color: rgba(239, 51, 51, 0.35);
+}
+
+/* Historique des connexions (sans scroll) */
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    list-style: none;
+}
+
+.history-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 7px 10px;
+    background: var(--color-surface-light);
+    border-left: 2px solid var(--color-primary);
+}
+
+.history-date {
+    color: var(--color-text);
+    white-space: nowrap;
+}
+
+.history-time {
+    color: var(--color-muted);
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.history-empty {
+    color: var(--color-muted);
+    font-size: 14px;
+    font-style: italic;
+}
+
+/* Actions Admin */
+.table-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.table-actions .btn {
+    width: 100%;
+}
+
+/* État vide */
+.empty-state {
+    padding: 30px 20px;
+    text-align: center;
+    color: var(--color-muted);
+    font-size: 16px;
+}
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+@media (max-width: 768px) {
+    nav {
+        flex-wrap: wrap;
+        gap: 12px 18px;
+        padding: 15px 20px;
+    }
+
+    nav a:first-child {
+        width: 100%;
+        margin-right: 0;
+    }
+
+    main {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .form-panel,
+    .profile-container,
+    .home-panel {
+        margin: 20px auto;
+        padding: 20px;
+    }
+
+    .profile-details {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-card-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .home-panel .btn-group .btn {
+        width: 100%;
+    }
 }

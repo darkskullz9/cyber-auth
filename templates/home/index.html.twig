@@ -3,13 +3,13 @@
 {% block title %}Accueil - Cyber Auth{% endblock %}
 
 {% block body %}
-    <main>
-        <header>
+        <header class="page-header">
+            <span class="section-kicker">// SYSTEM OVERVIEW</span>
             <h1>Cyber Auth</h1>
             <p>Plateforme de gestion sécurisée des utilisateurs et des accès.</p>
         </header>
 
-        <section>
+        <section class="surface-panel home-panel">
             <h2>Bienvenue</h2>
             <p>
                 Gérez votre compte et accédez aux fonctionnalités
@@ -19,17 +19,20 @@
             {% if app.user %}
                 <p>Bonjour {{ app.user.prenom }} {{ app.user.nom }} !</p>
 
-                <a href="{{ path('app_profile') }}">Mon profil</a>
+               <div class="btn-group">
+                    <a href="{{ path('app_profile') }}" class="btn">Mon profil</a>
 
-                {% if is_granted('ROLE_ADMIN') %}
-                    <a href="{{ path('app_admin') }}">Administration</a>
-                {% endif %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('app_admin') }}" class="btn">Administration</a>
+                    {% endif %}
 
-                <a href="{{ path('app_logout') }}">Déconnexion</a>
+                    <a href="{{ path('app_logout') }}" class="btn btn-danger">Déconnexion</a>
+                </div>
             {% else %}
-                <a href="{{ path('app_login') }}">Connexion</a>
-                <a href="{{ path('app_register') }}">Créer un compte</a>
+                <div class="btn-group">
+                    <a href="{{ path('app_login') }}" class="btn">Connexion</a>
+                    <a href="{{ path('app_register') }}" class="btn">Créer un compte</a>
+                </div>
             {% endif %}
         </section>
-    </main>
 {% endblock %}
