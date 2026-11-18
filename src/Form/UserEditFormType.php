@@ -58,11 +58,14 @@ class UserEditFormType extends AbstractType
                     new Assert\NotBlank(),
                     new Assert\Length(max: 5),
                 ],
-            ])
-            ->add('isSuspended', CheckboxType::class, [
-                'label' => 'Suspendre ce compte',
-                'required' => false,
-            ])
+            ]);
+
+            if ($options['show_suspension_field']) {
+                $builder->add('isSuspended', CheckboxType::class, [
+                    'label' => 'Suspendre ce compte',
+                    'required' => false,
+                ]);
+            }
         ;
     }
 
@@ -70,6 +73,7 @@ class UserEditFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'show_suspension_field' => true,
         ]);
     }
 }

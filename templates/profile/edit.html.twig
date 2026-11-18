@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier mon profil - Cyber Auth{% endblock %}
+
+{% block body %}
+    <section class="surface-panel profile-container" aria-labelledby="profile-edit-title">
+
+        <header class="panel-header">
+            <span class="section-kicker">// ESPACE PERSONNEL</span>
+            <h1 id="profile-edit-title">Modifier mon profil</h1>
+            <p>Actualisez les informations associées à votre compte.</p>
+        </header>
+
+        <section class="profile-card" aria-labelledby="profile-edit-form-title">
+            <div class="profile-card-header">
+                <h2 id="profile-edit-form-title">Informations personnelles</h2>
+            </div>
+
+            {{ form_start(userForm) }}
+
+                {{ form_row(userForm.email) }}
+                {{ form_row(userForm.nom) }}
+                {{ form_row(userForm.prenom) }}
+                {{ form_row(userForm.adresse) }}
+                {{ form_row(userForm.ville) }}
+                {{ form_row(userForm.codePostal) }}
+
+                <div class="profile-actions btn-group">
+                    <button type="submit" class="btn">
+                        Enregistrer les modifications
+                    </button>
+
+                    <a href="{{ path('app_profile') }}" class="btn">
+                        Annuler
+                    </a>
+                </div>
+
+            {{ form_end(userForm) }}
+        </section>
+
+    </section>
+{% endblock %}
